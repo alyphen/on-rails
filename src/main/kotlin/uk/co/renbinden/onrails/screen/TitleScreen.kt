@@ -67,7 +67,7 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
             add(Bounds(256.0, 128.0))
             add(Action {
                 removeListeners()
-                app.screen = ConversationScreen()
+                app.screen = ConversationScreen(app, assets)
             })
         })
 
