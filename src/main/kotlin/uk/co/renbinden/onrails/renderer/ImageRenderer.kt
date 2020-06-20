@@ -14,6 +14,7 @@ class ImageRenderer(
     override fun onRender() {
         engine.entities
             .filter { it.has(Position) && it.has(Image) }
+            .sortedByDescending { entity -> entity[Image].depth }
             .forEach { entity ->
                 val image = entity[Image]
                 val position = entity[Position]

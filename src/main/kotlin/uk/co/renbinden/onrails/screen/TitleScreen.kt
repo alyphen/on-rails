@@ -11,7 +11,9 @@ import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.avatar.Avatars
 import uk.co.renbinden.onrails.bounds.Bounds
+import uk.co.renbinden.onrails.conversation.timeline
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.path.Path
 import uk.co.renbinden.onrails.path.PathSystem
@@ -47,11 +49,11 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     )
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
+        val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
+        val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
         engine.entities
             .filter { entity ->
                 if (!entity.has(Position) || !entity.has(Bounds) || !entity.has(Action)) return@filter false
-                val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
-                val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
                 val position = entity[Position]
                 val bounds = entity[Bounds]
                 return@filter position.x <= mouseX && position.y <= mouseY
