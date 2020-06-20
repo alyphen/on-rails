@@ -5,11 +5,31 @@ import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
 import uk.co.renbinden.ilse.ecs.engine
+import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.image.Image
+import uk.co.renbinden.onrails.path.Path
+import uk.co.renbinden.onrails.path.PathSystem
+import uk.co.renbinden.onrails.position.Position
 import kotlin.browser.document
+import kotlin.math.sin
 
 class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
+    add(PathSystem())
 
+    add(entity {
+        add(Position(64.0, 96.0))
+        add(Image(assets.images.title))
+        add(Path(
+            { 64.0 },
+            { t -> (sin(t) * 16.0) + 64.0 }
+        ))
+    })
+
+    add(entity {
+        add(Position(272.0, 236.0))
+        add(Image(assets.images.buttonStart))
+    })
 }) {
 
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
@@ -19,6 +39,13 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
         ctx.clearRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
         ctx.fillStyle = "rgb(0, 0, 0)"
         ctx.fillRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
+        engine.entities
+            .filter { it.has(Position) && it.has(Image) }
+            .forEach { entity ->
+                val image = entity[Image]
+                val position = entity[Position]
+                ctx.drawImage(image.asset.image, position.x, position.y)
+            }
     }
 
 }
