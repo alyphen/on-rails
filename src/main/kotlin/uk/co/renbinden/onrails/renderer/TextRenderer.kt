@@ -14,7 +14,7 @@ class TextRenderer(
 ) : Renderer {
     override fun onRender() {
         engine.entities
-            .filter { it.has(Position) && it.has(Text) }
+            .filter { it.has(Position) && it.has(Text) && it.has(FillStyle) && it.has(Font) }
             .forEach { entity ->
                 val (x, y) = entity[Position]
                 val (text, maxWidth) = entity[Text]
@@ -29,11 +29,11 @@ class TextRenderer(
                     text,
                     maxWidth
                 )
-                for (line in lines) {
+                for ((i, line) in lines.withIndex()) {
                     ctx.fillText(
                         line,
                         x,
-                        y,
+                        y + (24 * i),
                         maxWidth
                     )
                 }
