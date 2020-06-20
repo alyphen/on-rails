@@ -6,7 +6,12 @@ import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
 import uk.co.renbinden.ilse.ecs.engine
 import uk.co.renbinden.ilse.ecs.entity.entity
+import uk.co.renbinden.ilse.event.Events
+import uk.co.renbinden.ilse.event.Listener
+import uk.co.renbinden.ilse.input.event.MouseDownEvent
+import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.bounds.Bounds
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.path.Path
 import uk.co.renbinden.onrails.path.PathSystem
@@ -16,6 +21,7 @@ import uk.co.renbinden.onrails.renderer.ImageRenderer
 import uk.co.renbinden.onrails.renderer.RenderPipeline
 import uk.co.renbinden.onrails.renderer.SolidBackgroundRenderer
 import kotlin.browser.document
+import kotlin.browser.window
 import kotlin.math.sin
 
 class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
@@ -29,11 +35,6 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
             { t -> (sin(t) * 16.0) + 64.0 }
         ))
     })
-
-    add(entity {
-        add(Position(272.0, 236.0))
-        add(Image(assets.images.buttonStart))
-    })
 }) {
 
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
@@ -44,6 +45,42 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
         SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
         ImageRenderer(canvas, ctx, engine)
     )
+
+    private val mouseDownListener = Listener<MouseDownEvent>({ event ->
+        engine.entities
+            .filter { entity ->
+                if (!entity.has(Position) || !entity.has(Bounds) || !entity.has(Action)) return@filter false
+                val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
+                val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
+                val position = entity[Position]
+                val bounds = entity[Bounds]
+                return@filter position.x <= mouseX && position.y <= mouseY
+                        && position.x + bounds.width >= mouseX && position.y + bounds.height >= mouseY
+            }
+            .forEach { entity -> entity[Action].onAction() }
+    })
+
+    init {
+        engine.add(entity {
+            add(Position(272.0, 236.0))
+            add(Image(assets.images.buttonStart))
+            add(Bounds(256.0, 128.0))
+            add(Action {
+                removeListeners()
+                app.screen = ConversationScreen()
+            })
+        })
+
+        addListeners()
+    }
+
+    fun addListeners() {
+        Events.addListener(MouseDownEvent, mouseDownListener)
+    }
+
+    fun removeListeners() {
+        Events.removeListener(MouseDownEvent, mouseDownListener)
+    }
 
     override fun onRender() {
         pipeline.onRender()
