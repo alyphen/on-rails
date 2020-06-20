@@ -11,6 +11,10 @@ import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.path.Path
 import uk.co.renbinden.onrails.path.PathSystem
 import uk.co.renbinden.onrails.position.Position
+import uk.co.renbinden.onrails.renderer.BaseRenderer
+import uk.co.renbinden.onrails.renderer.ImageRenderer
+import uk.co.renbinden.onrails.renderer.RenderPipeline
+import uk.co.renbinden.onrails.renderer.SolidBackgroundRenderer
 import kotlin.browser.document
 import kotlin.math.sin
 
@@ -35,17 +39,14 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
     val ctx = canvas.getContext("2d") as CanvasRenderingContext2D
 
+    val pipeline = RenderPipeline(
+        BaseRenderer(canvas, ctx),
+        SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
+        ImageRenderer(canvas, ctx, engine)
+    )
+
     override fun onRender() {
-        ctx.clearRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
-        ctx.fillStyle = "rgb(0, 0, 0)"
-        ctx.fillRect(0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
-        engine.entities
-            .filter { it.has(Position) && it.has(Image) }
-            .forEach { entity ->
-                val image = entity[Image]
-                val position = entity[Position]
-                ctx.drawImage(image.asset.image, position.x, position.y)
-            }
+        pipeline.onRender()
     }
 
 }
