@@ -32,6 +32,9 @@ class Assets {
         val southToEastTrackTile = ImageAsset("static/images/southtoeasttracktile.png")
         val southToWestTrackTile = ImageAsset("static/images/southtowesttracktile.png")
         val trainNorth = AnimationAsset("static/images/trainnorth.png", 128, 128)
+        val trainSouth = AnimationAsset("static/images/trainsouth.png", 128, 128)
+        val trainLeft = AnimationAsset("static/images/trainleft.png", 128, 128)
+        val trainRight = AnimationAsset("static/images/trainright.png", 128, 128)
     }
 
     inner class Maps {

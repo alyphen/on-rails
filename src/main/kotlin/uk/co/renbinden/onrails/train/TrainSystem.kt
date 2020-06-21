@@ -2,7 +2,10 @@ package uk.co.renbinden.onrails.train
 
 import uk.co.renbinden.ilse.ecs.entity.Entity
 import uk.co.renbinden.ilse.ecs.system.IteratingSystem
+import uk.co.renbinden.onrails.animation.Animation
+import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.direction.Direction
+import uk.co.renbinden.onrails.direction.Direction.*
 import uk.co.renbinden.onrails.direction.Direction.Companion.move
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.track.TrackDirection
@@ -10,7 +13,7 @@ import uk.co.renbinden.onrails.track.TrackOrientation
 import uk.co.renbinden.onrails.velocity.Velocity
 import kotlin.math.abs
 
-class TrainSystem : IteratingSystem({
+class TrainSystem(val assets: Assets) : IteratingSystem({
     it.has(Train)
 }) {
     override fun processEntity(entity: Entity, dt: Double) {
@@ -27,6 +30,12 @@ class TrainSystem : IteratingSystem({
                 val newDirection = track[TrackDirection].getNewDirection(oldDirection)
                 if (newDirection != null) {
                     entity.move(newDirection, 128.0)
+                    entity[Animation].asset = when (newDirection) {
+                        UP -> assets.images.trainNorth
+                        DOWN -> assets.images.trainSouth
+                        LEFT -> assets.images.trainLeft
+                        RIGHT -> assets.images.trainRight
+                    }
                 }
             }
         }

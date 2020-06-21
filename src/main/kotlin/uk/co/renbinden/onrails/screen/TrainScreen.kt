@@ -21,7 +21,6 @@ import kotlin.browser.document
 @ExperimentalStdlibApi
 class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     add(VelocitySystem())
-    add(TrainSystem())
     add(AnimationSystem())
     add(CameraSystem())
 }) {
@@ -36,6 +35,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     )
 
     init {
+        engine.add(TrainSystem(assets))
         engine.loadMap(assets, assets.maps.overworld)
     }
 

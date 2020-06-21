@@ -6,7 +6,7 @@ import uk.co.renbinden.ilse.ecs.component.ComponentMapper
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
-data class Animation(val asset: AnimationAsset, val frameDuration: Double) : Component {
+data class Animation(var asset: AnimationAsset, val frameDuration: Double) : Component {
 
     var t = 0.0
 
