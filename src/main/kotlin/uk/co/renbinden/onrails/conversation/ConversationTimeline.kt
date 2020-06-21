@@ -1,6 +1,5 @@
 package uk.co.renbinden.onrails.conversation
 
-import uk.co.renbinden.ilse.asset.ImageAsset
 import uk.co.renbinden.ilse.ecs.Engine
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.avatar.Avatar
@@ -32,6 +31,10 @@ class ConversationTimeline(val engine: Engine, val assets: Assets) {
 
     fun showText(speaker: Avatar?, message: String) {
         events.add(ShowTextConversationEvent(engine, assets, speaker, message))
+    }
+
+    fun execute(action: () -> Unit) {
+        events.add(ActionConversationEvent(action))
     }
 }
 
