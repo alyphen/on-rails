@@ -11,9 +11,8 @@ import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
-import uk.co.renbinden.onrails.avatar.Avatars
 import uk.co.renbinden.onrails.bounds.Bounds
-import uk.co.renbinden.onrails.conversation.timeline
+import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.path.Path
 import uk.co.renbinden.onrails.path.PathSystem
@@ -26,12 +25,15 @@ import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.math.sin
 
+@ExperimentalUnsignedTypes
+@ExperimentalStdlibApi
 class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     add(PathSystem())
 
     add(entity {
         add(Position(64.0, 96.0))
         add(Image(assets.images.title))
+        add(Depth(0))
         add(Path(
             { 64.0 },
             { t -> (sin(t) * 16.0) + 64.0 }
@@ -66,6 +68,7 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
         engine.add(entity {
             add(Position(272.0, 236.0))
             add(Image(assets.images.buttonStart))
+            add(Depth(0))
             add(Bounds(256.0, 128.0))
             add(Action {
                 removeListeners()

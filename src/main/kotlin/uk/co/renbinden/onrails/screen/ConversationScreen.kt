@@ -12,15 +12,19 @@ import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.avatar.Avatars
 import uk.co.renbinden.onrails.conversation.timeline
+import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
 import kotlin.browser.document
 
+@ExperimentalUnsignedTypes
+@ExperimentalStdlibApi
 class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
     add(entity {
         add(Position(0.0, 480.0))
-        add(Image(assets.images.textBoxBackground, -1))
+        add(Image(assets.images.textBoxBackground))
+        add(Depth(-1))
     })
 }) {
 
@@ -43,6 +47,7 @@ class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
         showText(avatars.jasonHardrail, "Yo, this is message 1. This is cool, huh?")
         showText(avatars.angelaFunikular, "This is message 2. Pretty neat?")
         showText(null, "This message doesn't have a speaker. So we can describe what's going on.")
+        execute { app.screen = TrainScreen(app, assets) }
     }
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->

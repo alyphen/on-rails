@@ -4,6 +4,7 @@ import uk.co.renbinden.ilse.ecs.Engine
 import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.avatar.Avatar
+import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.fillstyle.FillStyle
 import uk.co.renbinden.onrails.font.Font
 import uk.co.renbinden.onrails.image.Image
@@ -22,7 +23,8 @@ data class ShowTextConversationEvent(val engine: Engine, val assets: Assets, val
             })
             if (!engine.entities.any { it.has(Image) && it[Image].asset == assets.images.nameBoxBackground }) {
                 engine.add(entity {
-                    add(Image(assets.images.nameBoxBackground, -1))
+                    add(Image(assets.images.nameBoxBackground))
+                    add(Depth(-1))
                     add(Position(16.0, 448.0))
                 })
             }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.0.3" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="64" tileheight="64" nextobjectid="2">
+ <tileset firstgid="1" name="tiles" tilewidth="64" tileheight="64" tilecount="10" columns="0">
+  <grid orientation="orthogonal" width="1" height="1"/>
+  <tile id="0">
+   <image width="64" height="64" source="../images/verticaltracktile.png"/>
+  </tile>
+  <tile id="1">
+   <image width="64" height="64" source="../images/southtoeasttracktile.png"/>
+  </tile>
+  <tile id="2">
+   <image width="64" height="64" source="../images/southtowesttracktile.png"/>
+  </tile>
+  <tile id="3">
+   <image width="64" height="64" source="../images/northtoeasttracktile.png"/>
+  </tile>
+  <tile id="4">
+   <image width="64" height="64" source="../images/northtowesttracktile.png"/>
+  </tile>
+  <tile id="5">
+   <image width="64" height="64" source="../images/northoreastpoints.png"/>
+  </tile>
+  <tile id="6">
+   <image width="64" height="64" source="../images/northorwestpoints.png"/>
+  </tile>
+  <tile id="7">
+   <image width="64" height="64" source="../images/southoreastpoints.png"/>
+  </tile>
+  <tile id="8">
+   <image width="64" height="64" source="../images/southorwestpoints.png"/>
+  </tile>
+  <tile id="9">
+   <image width="64" height="64" source="../images/horizontaltracktile.png"/>
+  </tile>
+ </tileset>
+ <layer name="Tile Layer 1" width="16" height="16">
+  <data encoding="csv">
+2,10,10,3,0,0,0,1,0,0,0,1,0,0,0,0,
+1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,
+1,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,
+4,10,10,5,0,0,0,1,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,
+0,0,0,0,0,0,0,6,10,10,10,5,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup name="Object Layer 1">
+  <object id="1" type="train" x="416" y="960" width="128" height="128"/>
+ </objectgroup>
+</map>
