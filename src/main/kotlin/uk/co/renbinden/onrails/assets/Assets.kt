@@ -7,8 +7,11 @@ import uk.co.renbinden.ilse.asset.TextAsset
 class Assets {
 
     inner class Images {
-        val title = ImageAsset("static/images/title.png")
-        val buttonStart = ImageAsset("static/images/button_start.png")
+        val backgroundStart = ImageAsset("static/images/start_bg_full.png")
+        val title = ImageAsset("static/images/on_rails_logo.png")
+        val titleHover = ImageAsset("static/images/on_rails_logo_hover.png")
+        val buttonStart = ImageAsset("static/images/start_start.png")
+        val buttonStartHover = ImageAsset("static/images/start_hover.png")
         val backgroundStation1 = ImageAsset("static/images/bg1.jpg")
         val portraitAngelaFunikular = ImageAsset("static/images/portrait_angela_funikular.png")
         val portraitJasonHardrail = ImageAsset("static/images/portrait_jason_hardrail.png")

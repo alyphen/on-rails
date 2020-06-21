@@ -13,14 +13,13 @@ import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.bounds.Bounds
 import uk.co.renbinden.onrails.depth.Depth
+import uk.co.renbinden.onrails.hover.HoverImage
+import uk.co.renbinden.onrails.hover.HoverSystem
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.path.Path
 import uk.co.renbinden.onrails.path.PathSystem
 import uk.co.renbinden.onrails.position.Position
-import uk.co.renbinden.onrails.renderer.BaseRenderer
-import uk.co.renbinden.onrails.renderer.ImageRenderer
-import uk.co.renbinden.onrails.renderer.RenderPipeline
-import uk.co.renbinden.onrails.renderer.SolidBackgroundRenderer
+import uk.co.renbinden.onrails.renderer.*
 import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.math.sin
@@ -31,12 +30,14 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     add(PathSystem())
 
     add(entity {
-        add(Position(64.0, 96.0))
+        add(Position(237.0, 64.0))
+        add(Bounds(326.0, 256.0))
         add(Image(assets.images.title))
+        add(HoverImage(assets.images.title, assets.images.titleHover))
         add(Depth(0))
         add(Path(
-            { 64.0 },
-            { t -> (sin(t) * 16.0) + 64.0 }
+            { 237.0 },
+            { t -> (sin(t) * 16.0) + 32.0 }
         ))
     })
 }) {
@@ -47,6 +48,7 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     val pipeline = RenderPipeline(
         BaseRenderer(canvas, ctx),
         SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
+        BackgroundImageRenderer(canvas, ctx, assets.images.backgroundStart),
         ImageRenderer(canvas, ctx, engine)
     )
 
@@ -65,11 +67,14 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     })
 
     init {
+        engine.add(HoverSystem(canvas))
+
         engine.add(entity {
-            add(Position(272.0, 236.0))
+            add(Position(118.0, 325.0))
             add(Image(assets.images.buttonStart))
+            add(HoverImage(assets.images.buttonStart, assets.images.buttonStartHover))
             add(Depth(0))
-            add(Bounds(256.0, 128.0))
+            add(Bounds(565.0, 243.0))
             add(Action {
                 removeListeners()
                 app.screen = ConversationScreen(app, assets)
