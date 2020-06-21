@@ -2,16 +2,26 @@ package uk.co.renbinden.onrails.conversation
 
 import uk.co.renbinden.ilse.ecs.Engine
 import uk.co.renbinden.ilse.ecs.entity.entity
+import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.avatar.Avatar
+import uk.co.renbinden.onrails.bounds.Bounds
 import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.fillstyle.FillStyle
 import uk.co.renbinden.onrails.font.Font
+import uk.co.renbinden.onrails.hover.HoverImage
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.text.Text
 
-data class ShowTextConversationEvent(val engine: Engine, val assets: Assets, val speaker: Avatar?, val text: String) : ConversationEvent {
+class ShowTextWithOptionsConversationEvent(
+    val engine: Engine,
+    val assets: Assets,
+    val conversationTimeline: ConversationTimeline,
+    val speaker: Avatar?,
+    val text: String,
+    val options: Array<out String>
+) : ConversationEvent {
     override fun invoke() {
         engine.entities.filter { it.has(Text) }.forEach(engine::remove)
         if (speaker != null) {
@@ -39,5 +49,27 @@ data class ShowTextConversationEvent(val engine: Engine, val assets: Assets, val
             add(FillStyle("rgb(255, 255, 255)"))
             add(Font("20px 'Chelsea Market', cursive"))
         })
+
+        val startY = 480 - (options.size * 48)
+        val optionEntities = options.mapIndexed { i, option -> entity {
+            add(Position(528.0, startY + (i * 48.0)))
+            add(Image(assets.images.optionBackground))
+            add(HoverImage(assets.images.optionBackground, assets.images.optionHoverBackground))
+            add(Depth(-1))
+            add(Bounds(256.0, 32.0))
+        }}
+        optionEntities.forEach { optionEntity ->
+            optionEntity.add(Action {
+                optionEntities.forEach(engine::remove)
+                conversationTimeline.progress()
+            })
+            engine.add(optionEntity)
+        }
+        options.mapIndexed { i, option -> entity {
+            add(Position(544.0, startY + 8 + (i * 48.0)))
+            add(Text(option, 256.0))
+            add(FillStyle("rgb(255, 255, 255)"))
+            add(Font("20px 'Chelsea Market', cursive"))
+        }}.forEach(engine::add)
     }
 }

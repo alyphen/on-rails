@@ -17,6 +17,8 @@ class Assets {
         val portraitJasonHardrail = ImageAsset("static/images/portrait_jason_hardrail.png")
         val textBoxBackground = ImageAsset("static/images/textbox_background.png")
         val nameBoxBackground = ImageAsset("static/images/namebox_background.png")
+        val optionBackground = ImageAsset("static/images/option_background.png")
+        val optionHoverBackground = ImageAsset("static/images/option_hover_background.png")
         val verticalTrackTile = ImageAsset("static/images/verticaltracktile.png")
         val horizontalTrackTile = ImageAsset("static/images/horizontaltracktile.png")
         val northOrEastPoints = ImageAsset("static/images/northoreastpoints.png")

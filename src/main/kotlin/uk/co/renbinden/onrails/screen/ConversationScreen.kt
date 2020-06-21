@@ -9,14 +9,19 @@ import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.ilse.event.Events
 import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
+import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.avatar.Avatars
+import uk.co.renbinden.onrails.bounds.Bounds
+import uk.co.renbinden.onrails.conversation.ShowTextWithOptionsConversationEvent
 import uk.co.renbinden.onrails.conversation.timeline
 import uk.co.renbinden.onrails.depth.Depth
+import uk.co.renbinden.onrails.hover.HoverSystem
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
 import kotlin.browser.document
+import kotlin.browser.window
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
@@ -47,16 +52,29 @@ class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
         showText(avatars.jasonHardrail, "Yo, this is message 1. This is cool, huh?")
         showText(avatars.angelaFunikular, "This is message 2. Pretty neat?")
         showText(null, "This message doesn't have a speaker. So we can describe what's going on.")
+        showTextWithOptions(avatars.jasonHardrail, "You wanna make a choice? I got a bunch of choices!", "Choice A", "Choice B", "Choice C")
         execute { app.screen = TrainScreen(app, assets) }
     }
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
-        //val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
-        //val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
-        conversationTimeline.progress()
+        if (conversationTimeline.currentEvent !is ShowTextWithOptionsConversationEvent) {
+            conversationTimeline.progress()
+        }
+        val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
+        val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
+        engine.entities
+            .filter { entity ->
+                if (!entity.has(Position) || !entity.has(Bounds) || !entity.has(Action)) return@filter false
+                val position = entity[Position]
+                val bounds = entity[Bounds]
+                return@filter position.x <= mouseX && position.y <= mouseY
+                        && position.x + bounds.width >= mouseX && position.y + bounds.height >= mouseY
+            }
+            .forEach { entity -> entity[Action].onAction() }
     })
 
     init {
+        engine.add(HoverSystem(canvas))
         conversationTimeline.progress()
 
         addListeners()

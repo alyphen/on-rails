@@ -7,9 +7,11 @@ import uk.co.renbinden.onrails.avatar.Avatar
 class ConversationTimeline(val engine: Engine, val assets: Assets) {
     val events = mutableListOf<ConversationEvent>()
     private var eventIndex = 0
+    val currentEvent: ConversationEvent
+        get() = events[eventIndex - 1]
 
     fun progress() {
-        while (eventIndex < events.size && events[eventIndex] !is ShowTextConversationEvent) {
+        while (eventIndex < events.size && events[eventIndex] !is ShowTextConversationEvent && events[eventIndex] !is ShowTextWithOptionsConversationEvent) {
             events[eventIndex++]()
         }
         if (eventIndex < events.size) {
@@ -31,6 +33,10 @@ class ConversationTimeline(val engine: Engine, val assets: Assets) {
 
     fun showText(speaker: Avatar?, message: String) {
         events.add(ShowTextConversationEvent(engine, assets, speaker, message))
+    }
+
+    fun showTextWithOptions(speaker: Avatar?, message: String, vararg options: String) {
+        events.add(ShowTextWithOptionsConversationEvent(engine, assets, this, speaker, message, options))
     }
 
     fun execute(action: () -> Unit) {
