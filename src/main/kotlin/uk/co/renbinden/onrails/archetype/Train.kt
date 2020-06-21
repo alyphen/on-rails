@@ -12,7 +12,7 @@ object Train {
         add(Animation(assets.images.trainNorth, 0.2))
         add(Depth(-1))
         add(Position(x, y))
-        add(Velocity(0.0, -4.0))
+        add(Velocity(0.0, -128.0))
         add(uk.co.renbinden.onrails.train.Train())
     }
 }
