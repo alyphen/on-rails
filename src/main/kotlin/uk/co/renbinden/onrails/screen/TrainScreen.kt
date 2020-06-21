@@ -5,6 +5,7 @@ import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
 import uk.co.renbinden.ilse.ecs.engine
+import uk.co.renbinden.onrails.animation.AnimationSystem
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.camera.CameraSystem
 import uk.co.renbinden.onrails.levels.loadMap
@@ -12,6 +13,7 @@ import uk.co.renbinden.onrails.renderer.BaseRenderer
 import uk.co.renbinden.onrails.renderer.ImageRenderer
 import uk.co.renbinden.onrails.renderer.RenderPipeline
 import uk.co.renbinden.onrails.renderer.SolidBackgroundRenderer
+import uk.co.renbinden.onrails.train.TrainSystem
 import uk.co.renbinden.onrails.velocity.VelocitySystem
 import kotlin.browser.document
 
@@ -19,6 +21,8 @@ import kotlin.browser.document
 @ExperimentalStdlibApi
 class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     add(VelocitySystem())
+    add(TrainSystem())
+    add(AnimationSystem())
     add(CameraSystem())
 }) {
 
@@ -32,7 +36,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     )
 
     init {
-        engine.loadMap(assets, assets.maps.map1)
+        engine.loadMap(assets, assets.maps.overworld)
     }
 
     override fun onRender() {

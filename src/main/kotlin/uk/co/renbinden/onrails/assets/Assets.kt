@@ -33,6 +33,7 @@ class Assets {
 
     inner class Maps {
         val map1 = TextAsset("static/maps/map1.tmx")
+        val overworld = TextAsset("static/maps/tilemap_Overworld.tmx")
     }
 
     val images = Images()

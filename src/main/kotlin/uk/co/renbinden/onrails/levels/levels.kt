@@ -37,11 +37,15 @@ private fun loadMapNow(
                     "../images/horizontaltracktile.png" -> HORIZONTAL
                     "../images/verticaltracktile.png" -> VERTICAL
                     "../images/northoreastpoints.png" -> NORTH_OR_EAST_POINTS
+                    "../images/northoreastpointsB.png" -> NORTH_OR_EAST_POINTS_B
                     "../images/northorwestpoints.png" -> NORTH_OR_WEST_POINTS
+                    "../images/northorwestpointsB.png" -> NORTH_OR_WEST_POINTS_B
                     "../images/northtoeasttracktile.png" -> NORTH_TO_EAST
                     "../images/northtowesttracktile.png" -> NORTH_TO_WEST
                     "../images/southoreastpoints.png" -> SOUTH_OR_EAST_POINTS
+                    "../images/southoreastBpoints.png" -> SOUTH_OR_EAST_POINTS_B
                     "../images/southorwestpoints.png" -> SOUTH_OR_WEST_POINTS
+                    "../images/westorsouthpoints.png" -> SOUTH_OR_WEST_POINTS_B
                     "../images/southtoeasttracktile.png" -> SOUTH_TO_EAST
                     "../images/southtowesttracktile.png" -> SOUTH_TO_WEST
                     else -> null
