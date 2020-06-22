@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
+import uk.co.renbinden.ilse.asset.TextAsset
 import uk.co.renbinden.ilse.ecs.engine
 import uk.co.renbinden.ilse.ecs.entity.Entity
 import uk.co.renbinden.ilse.event.Events
@@ -19,9 +20,11 @@ import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.camera.Camera
 import uk.co.renbinden.onrails.camera.CameraSystem
 import uk.co.renbinden.onrails.collision.DreamCollectSystem
+import uk.co.renbinden.onrails.conversation.ConversationTimeline
 import uk.co.renbinden.onrails.direction.Direction
 import uk.co.renbinden.onrails.direction.Direction.*
 import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
+import uk.co.renbinden.onrails.end.EndSystem
 import uk.co.renbinden.onrails.levels.loadMap
 import uk.co.renbinden.onrails.particle.ParticleSystem
 import uk.co.renbinden.onrails.position.Position
@@ -44,7 +47,12 @@ import kotlin.math.sqrt
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
-class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
+class LevelScreen(
+    val app: App,
+    val assets: Assets,
+    val map: TextAsset,
+    val endConversation: ConversationTimeline
+) : Screen(engine {
     add(TimerSystem())
     add(VelocitySystem())
     add(AnimationSystem())
@@ -52,6 +60,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     add(CameraSystem())
     add(DreamCollectSystem())
     add(SteamRepelSystem())
+    add(EndSystem())
 }) {
 
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
@@ -295,7 +304,10 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
 
     init {
         engine.add(TrainSystem(assets))
-        engine.loadMap(assets, assets.maps.overworld)
+        engine.loadMap(assets, map) {
+            removeListeners()
+            app.screen = ConversationScreen(app, assets, endConversation, { app.screen = LevelSelectScreen(app, assets) })
+        }
         addListeners()
     }
 

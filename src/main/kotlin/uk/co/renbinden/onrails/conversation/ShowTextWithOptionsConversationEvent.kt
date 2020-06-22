@@ -15,14 +15,13 @@ import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.text.Text
 
 class ShowTextWithOptionsConversationEvent(
-    val engine: Engine,
     val assets: Assets,
     val conversationTimeline: ConversationTimeline,
     val speaker: Avatar?,
     val text: String,
     val options: Array<out String>
 ) : ConversationEvent {
-    override fun invoke() {
+    override fun invoke(engine: Engine) {
         engine.entities.filter { it.has(Text) }.forEach(engine::remove)
         if (speaker != null) {
             engine.add(entity {
@@ -61,7 +60,7 @@ class ShowTextWithOptionsConversationEvent(
         optionEntities.forEach { optionEntity ->
             optionEntity.add(Action {
                 optionEntities.forEach(engine::remove)
-                conversationTimeline.progress()
+                conversationTimeline.progress(engine)
             })
             engine.add(optionEntity)
         }

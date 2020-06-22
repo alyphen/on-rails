@@ -1,7 +1,6 @@
 package uk.co.renbinden.onrails.conversation
 
 import uk.co.renbinden.ilse.ecs.Engine
-import uk.co.renbinden.ilse.ecs.entity.Entity
 import uk.co.renbinden.onrails.avatar.Avatar
 import uk.co.renbinden.onrails.avatar.AvatarName
 import uk.co.renbinden.onrails.path.Path
@@ -9,13 +8,12 @@ import uk.co.renbinden.onrails.position.Position
 import kotlin.math.max
 
 data class MoveAvatarConversationEvent(
-    val engine: Engine,
     val avatar: Avatar,
     val endX: Double,
     val endY: Double,
     val animationTime: Double
 ) : ConversationEvent {
-    override fun invoke() {
+    override fun invoke(engine: Engine) {
         val avatarEntity = engine.entities.firstOrNull { it.has(AvatarName) && it[AvatarName].name == avatar.name } ?: return
         if (avatarEntity.has(Path)) {
             avatarEntity.remove(Path)

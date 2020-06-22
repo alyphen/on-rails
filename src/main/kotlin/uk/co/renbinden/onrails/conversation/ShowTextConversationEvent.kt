@@ -11,8 +11,8 @@ import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.text.Text
 
-data class ShowTextConversationEvent(val engine: Engine, val assets: Assets, val speaker: Avatar?, val text: String) : ConversationEvent {
-    override fun invoke() {
+data class ShowTextConversationEvent(val assets: Assets, val speaker: Avatar?, val text: String) : ConversationEvent {
+    override fun invoke(engine: Engine) {
         engine.entities.filter { it.has(Text) }.forEach(engine::remove)
         if (speaker != null) {
             engine.add(entity {

@@ -2,6 +2,7 @@ package uk.co.renbinden.onrails.levels
 
 import uk.co.renbinden.ilse.asset.TextAsset
 import uk.co.renbinden.ilse.asset.event.AssetLoadEvent
+import uk.co.renbinden.ilse.collision.RectangleCollider
 import uk.co.renbinden.ilse.ecs.Engine
 import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.ilse.event.Events
@@ -12,8 +13,11 @@ import uk.co.renbinden.onrails.archetype.DreamBubbleSpawner
 import uk.co.renbinden.onrails.archetype.Track
 import uk.co.renbinden.onrails.archetype.Train
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.bounds.Bounds
+import uk.co.renbinden.onrails.collision.Collider
 import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
+import uk.co.renbinden.onrails.end.End
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.track.TrackOrientation.*
@@ -23,9 +27,10 @@ import uk.co.renbinden.onrails.track.TrackOrientation.*
 class LevelLoadListener(
     engine: Engine,
     assets: Assets,
-    map: TextAsset
+    map: TextAsset,
+    showEndConversation: () -> Unit
 ) : Listener<AssetLoadEvent>(handler@{
-    loadMapNow(engine, assets, map)
+    loadMapNow(engine, assets, map, showEndConversation)
 })
 
 @ExperimentalUnsignedTypes
@@ -33,7 +38,8 @@ class LevelLoadListener(
 private fun loadMapNow(
     engine: Engine,
     assets: Assets,
-    map: TextAsset
+    map: TextAsset,
+    showEndConversation: () -> Unit
 ) {
     val tiledMap = TiledMapLoader.loadMap(map) ?: return
     tiledMap.layers.forEach { layer ->
@@ -108,6 +114,19 @@ private fun loadMapNow(
                         add(Position(obj.x, obj.y))
                     })
                 }
+                "end" -> {
+                    engine.add(entity {
+                        add(Position(obj.x, obj.y))
+                        add(Bounds(obj.width, obj.height))
+                        add(Collider(RectangleCollider(
+                            this[Position]::x,
+                            this[Position]::y,
+                            this[Bounds]::width,
+                            this[Bounds]::height
+                        )))
+                        add(End(showEndConversation))
+                    })
+                }
             }
         }
     }
@@ -115,11 +134,11 @@ private fun loadMapNow(
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
-fun Engine.loadMap(assets: Assets, map: TextAsset) {
+fun Engine.loadMap(assets: Assets, map: TextAsset, showEndConversation: () -> Unit) {
     if (!map.isLoaded) {
-        val levelLoadListener = LevelLoadListener(this, assets, map)
+        val levelLoadListener = LevelLoadListener(this, assets, map, showEndConversation)
         Events.listenOnce(AssetLoadEvent, { event -> event.asset == map }, levelLoadListener)
     } else {
-        loadMapNow(this, assets, map)
+        loadMapNow(this, assets, map, showEndConversation)
     }
 }

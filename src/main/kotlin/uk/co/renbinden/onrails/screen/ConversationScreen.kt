@@ -11,10 +11,9 @@ import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.onrails.action.Action
 import uk.co.renbinden.onrails.assets.Assets
-import uk.co.renbinden.onrails.avatar.Avatars
 import uk.co.renbinden.onrails.bounds.Bounds
+import uk.co.renbinden.onrails.conversation.ConversationTimeline
 import uk.co.renbinden.onrails.conversation.ShowTextWithOptionsConversationEvent
-import uk.co.renbinden.onrails.conversation.timeline
 import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.hover.HoverSystem
 import uk.co.renbinden.onrails.image.Image
@@ -25,7 +24,7 @@ import kotlin.browser.window
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
-class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
+class ConversationScreen(val app: App, val assets: Assets, val conversationTimeline: ConversationTimeline, val next: () -> Unit) : Screen(engine {
     add(entity {
         add(Position(0.0, 480.0))
         add(Image(assets.images.textBoxBackground))
@@ -44,24 +43,9 @@ class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
         TextRenderer(canvas, ctx, engine)
     )
 
-    val avatars = Avatars(assets)
-
-    val conversationTimeline = timeline(engine, assets) {
-        createAvatar(avatars.jasonHardrail, 500.0, 100.0)
-        createAvatar(avatars.angelaFunikular, 16.0, 100.0)
-        showText(avatars.jasonHardrail, "Yo, this is message 1. This is cool, huh?")
-        showText(avatars.angelaFunikular, "This is message 2. Pretty neat?")
-        showText(null, "This message doesn't have a speaker. So we can describe what's going on.")
-        showTextWithOptions(avatars.jasonHardrail, "You wanna make a choice? I got a bunch of choices!", "Choice A", "Choice B", "Choice C")
-        execute {
-            removeListeners()
-            app.screen = TrainScreen(app, assets)
-        }
-    }
-
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
         if (conversationTimeline.currentEvent !is ShowTextWithOptionsConversationEvent) {
-            conversationTimeline.progress()
+            conversationTimeline.progress(engine)
         }
         val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
         val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
@@ -78,7 +62,8 @@ class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
 
     init {
         engine.add(HoverSystem(canvas))
-        conversationTimeline.progress()
+        conversationTimeline.execute { removeListeners(); next() }
+        conversationTimeline.progress(engine)
 
         addListeners()
     }

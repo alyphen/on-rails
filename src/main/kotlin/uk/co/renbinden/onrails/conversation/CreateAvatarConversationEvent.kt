@@ -9,12 +9,11 @@ import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
 
 class CreateAvatarConversationEvent(
-    val engine: Engine,
     val avatar: Avatar,
     val x: Double,
     val y: Double
 ) : ConversationEvent {
-    override fun invoke() {
+    override fun invoke(engine: Engine) {
         engine.add(entity {
             add(Image(avatar.asset))
             add(Depth(1))
