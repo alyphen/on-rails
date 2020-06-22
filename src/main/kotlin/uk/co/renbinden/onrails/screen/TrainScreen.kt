@@ -12,6 +12,7 @@ import uk.co.renbinden.ilse.input.event.KeyDownEvent
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.ilse.input.mapping.Mouse
 import uk.co.renbinden.onrails.animation.AnimationSystem
+import uk.co.renbinden.onrails.archetype.PointsEffect
 import uk.co.renbinden.onrails.archetype.Steam
 import uk.co.renbinden.onrails.archetype.WhistleEffect
 import uk.co.renbinden.onrails.assets.Assets
@@ -66,11 +67,37 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
 
     private val keyDownListener = Listener<KeyDownEvent>({ event ->
         if (event.key == "a" || event.key == "ArrowLeft") {
-            getNextPoints()?.switchPointsLeft()
+            val nextPoints = getNextPoints()
+            if (nextPoints != null) {
+                nextPoints.switchPointsLeft()
+                createPointsSwitchParticleEffect(nextPoints)
+            }
         } else if (event.key == "d" || event.key == "ArrowRight") {
-            getNextPoints()?.switchPointsRight()
+            val nextPoints = getNextPoints()
+            if (nextPoints != null) {
+                nextPoints.switchPointsRight()
+                createPointsSwitchParticleEffect(nextPoints)
+            }
         }
     })
+
+    private fun createPointsSwitchParticleEffect(nextPoints: Entity) {
+        val nextPointsApproachDirection = getNextPointsApproachDirection()
+        if (nextPointsApproachDirection != null) {
+            val nextPointsDirection = nextPoints[TrackDirection].getNewDirection(nextPointsApproachDirection)
+            if (nextPointsDirection != null) {
+                engine.add(
+                    PointsEffect(
+                        engine,
+                        ctx,
+                        nextPoints[Position].x + 32,
+                        nextPoints[Position].y + 32,
+                        nextPointsDirection
+                    )
+                )
+            }
+        }
+    }
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
         if (event.buttons and Mouse.PRIMARY != 0.toShort()) {
@@ -98,7 +125,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
             val train = engine.entities.firstOrNull { it.has(Train) && it.has(Position) }
             if (train != null) {
                 val trainPosition = train[Position]
-                engine.add(WhistleEffect(ctx, train, 768.0))
+                engine.add(WhistleEffect(engine, ctx, train, 768.0))
                 engine.entities.filter { it.has(DreamBubbleEmotion) && it.has(Position) && it.has(Velocity) }
                     .forEach { dreamBubble ->
                         val dreamBubblePosition = dreamBubble[Position]
@@ -138,6 +165,22 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
                 track = track.nextTrack(direction) ?: return null
             }
             return track
+        }
+        return null
+    }
+    
+    fun getNextPointsApproachDirection(): Direction? {
+        val train = engine.entities.firstOrNull { it.has(Train) && it.has(Position) }
+        if (train != null) {
+            val trainDirection = train[Train].lastDirection
+            val currentTrack = train[Train].lastTrack
+            var direction = trainDirection
+            var track = currentTrack?.nextTrack(direction) ?: return null
+            while (!pointsOrientations.contains(track[TrackOrientation])) {
+                direction = track[TrackDirection].getNewDirection(direction) ?: return null
+                track = track.nextTrack(direction) ?: return null
+            }
+            return direction
         }
         return null
     }
