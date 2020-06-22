@@ -128,8 +128,39 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
             add(Font("16px 'Chelsea Market', cursive"))
             add(Position(98.0, 396.0))
         })
+
+        engine.add(LevelSelectButtonText("2", 390.0, 320.0))
+        engine.add(LevelSelectButton(assets, 368.0, 300.0) {
+            removeListeners()
+            assets.sounds.beep.play()
+            level(
+                2,
+                assets.images.backgroundStation2,
+                timeline(assets) {
+
+                },
+                assets.images.backgroundStation3,
+                timeline(assets) {
+
+                },
+                assets.maps.overworld,
+                mapOf(
+                    JUBILANCE to 4,
+                    MISERY to 0,
+                    ANIMOSITY to 3,
+                    INTIMACY to 0
+                )
+            )
+        })
         engine.add(entity {
-            add(Text("Total score: ${Scoring.getTotalScore(1)}", 256.0))
+            add(Text("Level 2 score: ${Scoring.getScore(2)}", 256.0))
+            add(FillStyle("rgb(255, 255, 255)"))
+            add(Font("16px 'Chelsea Market', cursive"))
+            add(Position(336.0, 396.0))
+        })
+
+        engine.add(entity {
+            add(Text("Total score: ${Scoring.getTotalScore(2)}", 256.0))
             add(FillStyle("rgb(255, 255, 255)"))
             add(Font("16px 'Chelsea Market', cursive"))
             add(Position(350.0, 500.0))
