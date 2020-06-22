@@ -185,7 +185,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
                 trackDirection.setNewDirection(UP, UP)
             }
             SOUTH_OR_EAST_POINTS_B -> {
-                trackDirection.setNewDirection(RIGHT, RIGHT)
+                trackDirection.setNewDirection(RIGHT, DOWN)
                 trackDirection.setNewDirection(UP, LEFT)
                 trackDirection.setNewDirection(LEFT, LEFT)
             }
@@ -197,7 +197,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
             SOUTH_OR_WEST_POINTS_B -> {
                 trackDirection.setNewDirection(LEFT, LEFT)
                 trackDirection.setNewDirection(UP, LEFT)
-                trackDirection.setNewDirection(RIGHT, RIGHT)
+                trackDirection.setNewDirection(RIGHT, DOWN)
             }
             else -> Unit
         }
@@ -243,7 +243,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
             }
             SOUTH_OR_WEST_POINTS_B -> {
                 trackDirection.setNewDirection(LEFT, DOWN)
-                trackDirection.setNewDirection(RIGHT, DOWN)
+                trackDirection.setNewDirection(RIGHT, RIGHT)
                 trackDirection.setNewDirection(UP, RIGHT)
             }
             else -> Unit
