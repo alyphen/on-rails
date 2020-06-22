@@ -6,6 +6,7 @@ import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
 import uk.co.renbinden.ilse.asset.TextAsset
 import uk.co.renbinden.ilse.ecs.engine
+import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.ilse.event.Events
 import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
@@ -17,9 +18,15 @@ import uk.co.renbinden.onrails.avatar.Avatars
 import uk.co.renbinden.onrails.bounds.Bounds
 import uk.co.renbinden.onrails.conversation.ConversationTimeline
 import uk.co.renbinden.onrails.conversation.timeline
+import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
+import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion.*
+import uk.co.renbinden.onrails.fillstyle.FillStyle
+import uk.co.renbinden.onrails.font.Font
 import uk.co.renbinden.onrails.hover.HoverSystem
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
+import uk.co.renbinden.onrails.scoring.Scoring
+import uk.co.renbinden.onrails.text.Text
 import kotlin.browser.document
 import kotlin.browser.window
 
@@ -60,6 +67,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
         engine.add(LevelSelectButton(assets, 128.0, 300.0) {
             removeListeners()
             level(
+                1,
                 timeline(assets) {
                     createAvatar(avatars.jasonHardrail, 500.0, 100.0)
                     createAvatar(avatars.angelaFunikular, 16.0, 100.0)
@@ -72,16 +80,34 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                     createAvatar(avatars.dianaBogie, 500.0, 100.0)
                     showText(avatars.dianaBogie, "And that's the end")
                 },
-                assets.maps.overworld
+                assets.maps.overworld,
+                mapOf(
+                    JUBILANCE to 4,
+                    MISERY to 0,
+                    ANIMOSITY to 3,
+                    INTIMACY to 0
+                )
             )
+        })
+        engine.add(entity {
+            add(Text("Level 1 score: ${Scoring.getScore(1)}", 256.0))
+            add(FillStyle("rgb(255, 255, 255)"))
+            add(Font("16px 'Chelsea Market', cursive"))
+            add(Position(98.0, 396.0))
+        })
+        engine.add(entity {
+            add(Text("Total score: ${Scoring.getTotalScore(1)}", 256.0))
+            add(FillStyle("rgb(255, 255, 255)"))
+            add(Font("16px 'Chelsea Market', cursive"))
+            add(Position(350.0, 500.0))
         })
 
         addListeners()
     }
 
-    fun level(startConversation: ConversationTimeline, endConversation: ConversationTimeline, map: TextAsset) {
+    fun level(level: Int, startConversation: ConversationTimeline, endConversation: ConversationTimeline, map: TextAsset, emotions: Map<DreamBubbleEmotion, Int>) {
         app.screen = ConversationScreen(app, assets, startConversation) {
-            app.screen = LevelScreen(app, assets, map, endConversation)
+            app.screen = LevelScreen(app, assets, level, map, endConversation, emotions)
         }
     }
 

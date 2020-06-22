@@ -20,6 +20,7 @@ import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
 import uk.co.renbinden.onrails.end.End
 import uk.co.renbinden.onrails.image.Image
 import uk.co.renbinden.onrails.position.Position
+import uk.co.renbinden.onrails.scoring.Scoring
 import uk.co.renbinden.onrails.track.TrackOrientation.*
 
 @ExperimentalUnsignedTypes
@@ -28,9 +29,11 @@ class LevelLoadListener(
     engine: Engine,
     assets: Assets,
     map: TextAsset,
+    level: Int,
+    calculateScore: () -> Int,
     showEndConversation: () -> Unit
 ) : Listener<AssetLoadEvent>(handler@{
-    loadMapNow(engine, assets, map, showEndConversation)
+    loadMapNow(engine, assets, map, level, calculateScore, showEndConversation)
 })
 
 @ExperimentalUnsignedTypes
@@ -39,6 +42,8 @@ private fun loadMapNow(
     engine: Engine,
     assets: Assets,
     map: TextAsset,
+    level: Int,
+    calculateScore: () -> Int,
     showEndConversation: () -> Unit
 ) {
     val tiledMap = TiledMapLoader.loadMap(map) ?: return
@@ -124,7 +129,10 @@ private fun loadMapNow(
                             this[Bounds]::width,
                             this[Bounds]::height
                         )))
-                        add(End(showEndConversation))
+                        add(End {
+                            Scoring.setScore(level, calculateScore())
+                            showEndConversation()
+                        })
                     })
                 }
             }
@@ -134,11 +142,11 @@ private fun loadMapNow(
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
-fun Engine.loadMap(assets: Assets, map: TextAsset, showEndConversation: () -> Unit) {
+fun Engine.loadMap(assets: Assets, map: TextAsset, level: Int, calculateScore: () -> Int, showEndConversation: () -> Unit) {
     if (!map.isLoaded) {
-        val levelLoadListener = LevelLoadListener(this, assets, map, showEndConversation)
+        val levelLoadListener = LevelLoadListener(this, assets, map, level, calculateScore, showEndConversation)
         Events.listenOnce(AssetLoadEvent, { event -> event.asset == map }, levelLoadListener)
     } else {
-        loadMapNow(this, assets, map, showEndConversation)
+        loadMapNow(this, assets, map, level, calculateScore, showEndConversation)
     }
 }

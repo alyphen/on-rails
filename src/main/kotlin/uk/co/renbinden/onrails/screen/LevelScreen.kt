@@ -24,6 +24,8 @@ import uk.co.renbinden.onrails.conversation.ConversationTimeline
 import uk.co.renbinden.onrails.direction.Direction
 import uk.co.renbinden.onrails.direction.Direction.*
 import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
+import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion.*
+import uk.co.renbinden.onrails.dreamstats.DreamStats
 import uk.co.renbinden.onrails.end.EndSystem
 import uk.co.renbinden.onrails.levels.loadMap
 import uk.co.renbinden.onrails.particle.ParticleSystem
@@ -43,6 +45,7 @@ import kotlin.browser.document
 import kotlin.browser.window
 import kotlin.experimental.and
 import kotlin.math.abs
+import kotlin.math.round
 import kotlin.math.sqrt
 
 @ExperimentalUnsignedTypes
@@ -50,8 +53,10 @@ import kotlin.math.sqrt
 class LevelScreen(
     val app: App,
     val assets: Assets,
+    val level: Int,
     val map: TextAsset,
-    val endConversation: ConversationTimeline
+    val endConversation: ConversationTimeline,
+    val targetEmotions: Map<DreamBubbleEmotion, Int>
 ) : Screen(engine {
     add(TimerSystem())
     add(VelocitySystem())
@@ -304,7 +309,7 @@ class LevelScreen(
 
     init {
         engine.add(TrainSystem(assets))
-        engine.loadMap(assets, map) {
+        engine.loadMap(assets, map, level, this::calculateScore) {
             removeListeners()
             app.screen = ConversationScreen(app, assets, endConversation, { app.screen = LevelSelectScreen(app, assets) })
         }
@@ -325,5 +330,18 @@ class LevelScreen(
 
     override fun onRender() {
         pipeline.onRender()
+    }
+
+    fun calculateScore(): Int {
+        val statsContainer = engine.entities.firstOrNull { it.has(DreamStats) }
+        if (statsContainer != null) {
+            val jubilanceDist = (targetEmotions[JUBILANCE] ?: 0) - (statsContainer[DreamStats].emotions[JUBILANCE] ?: 0)
+            val miseryDist = (targetEmotions[MISERY] ?: 0) - (statsContainer[DreamStats].emotions[MISERY] ?: 0)
+            val animosityDist = (targetEmotions[ANIMOSITY] ?: 0) - (statsContainer[DreamStats].emotions[ANIMOSITY] ?: 0)
+            val intimacyDist = (targetEmotions[INTIMACY] ?: 0) - (statsContainer[DreamStats].emotions[INTIMACY] ?: 0)
+            return 10000 - round(sqrt(((jubilanceDist * jubilanceDist) + (miseryDist * miseryDist) + (animosityDist * animosityDist) + (intimacyDist * intimacyDist)).toDouble()) * 1000.0).toInt()
+        } else {
+            return 0
+        }
     }
 }
