@@ -9,22 +9,31 @@ import uk.co.renbinden.ilse.ecs.entity.Entity
 import uk.co.renbinden.ilse.event.Events
 import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.KeyDownEvent
+import uk.co.renbinden.ilse.input.event.MouseDownEvent
+import uk.co.renbinden.ilse.input.mapping.Mouse
 import uk.co.renbinden.onrails.animation.AnimationSystem
+import uk.co.renbinden.onrails.archetype.WhistleEffect
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.camera.CameraSystem
+import uk.co.renbinden.onrails.collision.DreamCollectSystem
 import uk.co.renbinden.onrails.direction.Direction
 import uk.co.renbinden.onrails.direction.Direction.*
+import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
 import uk.co.renbinden.onrails.levels.loadMap
+import uk.co.renbinden.onrails.particle.ParticleSystem
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
 import uk.co.renbinden.onrails.timer.TimerSystem
+import uk.co.renbinden.onrails.timer.TimerTask
 import uk.co.renbinden.onrails.track.TrackDirection
 import uk.co.renbinden.onrails.track.TrackOrientation
 import uk.co.renbinden.onrails.track.TrackOrientation.*
 import uk.co.renbinden.onrails.train.Train
 import uk.co.renbinden.onrails.train.TrainSystem
+import uk.co.renbinden.onrails.velocity.Velocity
 import uk.co.renbinden.onrails.velocity.VelocitySystem
 import kotlin.browser.document
+import kotlin.experimental.and
 import kotlin.math.abs
 
 @ExperimentalUnsignedTypes
@@ -33,7 +42,9 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     add(TimerSystem())
     add(VelocitySystem())
     add(AnimationSystem())
+    add(ParticleSystem())
     add(CameraSystem())
+    add(DreamCollectSystem())
 }) {
 
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
@@ -43,7 +54,8 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
         BaseRenderer(canvas, ctx),
         SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
         TiledBackgroundImageRenderer(canvas, ctx, engine, assets.images.backgroundStars2),
-        ImageRenderer(canvas, ctx, engine)
+        ImageRenderer(canvas, ctx, engine),
+        ParticleRenderer(ctx, engine)
     )
 
     private val keyDownListener = Listener<KeyDownEvent>({ event ->
@@ -51,6 +63,32 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
             getNextPoints()?.switchPointsLeft()
         } else if (event.key == "d" || event.key == "ArrowRight") {
             getNextPoints()?.switchPointsRight()
+        }
+    })
+
+    private val mouseDownListener = Listener<MouseDownEvent>({ event ->
+        if (event.buttons and Mouse.PRIMARY != 0.toShort()) {
+
+        }
+        if (event.buttons and Mouse.SECONDARY != 0.toShort()) {
+            val train = engine.entities.firstOrNull { it.has(Train) && it.has(Position) }
+            if (train != null) {
+                event.preventDefault()
+                val trainPosition = train[Position]
+                engine.add(WhistleEffect(ctx, train, 768.0))
+                engine.entities.filter { it.has(DreamBubbleEmotion) && it.has(Position) && it.has(Velocity) }
+                    .forEach { dreamBubble ->
+                        val dreamBubblePosition = dreamBubble[Position]
+                        if (dreamBubblePosition.distanceSquared(trainPosition) <= 147456) {
+                            if (dreamBubble.has(TimerTask)) {
+                                dreamBubble.remove(TimerTask)
+                            }
+                            val velocity = dreamBubble[Velocity]
+                            velocity.dx = (trainPosition.x - dreamBubblePosition.x) * 2
+                            velocity.dy = (trainPosition.y - dreamBubblePosition.y) * 2
+                        }
+                    }
+            }
         }
     })
 
@@ -197,10 +235,14 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
 
     private fun addListeners() {
         Events.addListener(KeyDownEvent, keyDownListener)
+        Events.addListener(MouseDownEvent, mouseDownListener)
+        canvas.oncontextmenu = { false }
     }
 
     private fun removeListeners() {
         Events.removeListener(KeyDownEvent, keyDownListener)
+        Events.removeListener(MouseDownEvent, mouseDownListener)
+        canvas.oncontextmenu = null
     }
 
     override fun onRender() {
