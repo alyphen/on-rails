@@ -25,16 +25,21 @@ class TrainSystem(val assets: Assets) : IteratingSystem({
                     && abs(trackPosition.y - (trainPosition.y + 32)) < 2.0
         }
         if (track != null) {
-            val oldDirection = Direction.fromVelocity(entity[Velocity])
-            if (oldDirection != null) {
-                val newDirection = track[TrackDirection].getNewDirection(oldDirection)
-                if (newDirection != null) {
-                    entity.move(newDirection, 128.0)
-                    entity[Animation].asset = when (newDirection) {
-                        UP -> assets.images.trainNorth
-                        DOWN -> assets.images.trainSouth
-                        LEFT -> assets.images.trainLeft
-                        RIGHT -> assets.images.trainRight
+            val train = entity[Train]
+            if (train.lastTrack != track) {
+                val oldDirection = Direction.fromVelocity(entity[Velocity])
+                if (oldDirection != null) {
+                    val newDirection = track[TrackDirection].getNewDirection(oldDirection)
+                    if (newDirection != null) {
+                        train.lastDirection = newDirection
+                        train.lastTrack = track
+                        entity.move(newDirection, 128.0)
+                        entity[Animation].asset = when (newDirection) {
+                            UP -> assets.images.trainNorth
+                            DOWN -> assets.images.trainSouth
+                            LEFT -> assets.images.trainLeft
+                            RIGHT -> assets.images.trainRight
+                        }
                     }
                 }
             }

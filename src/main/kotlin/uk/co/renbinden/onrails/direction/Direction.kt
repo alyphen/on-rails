@@ -39,5 +39,8 @@ enum class Direction {
                 }
             }
         }
+
+        val Entity.direction: Direction?
+            get() = fromVelocity(this[Velocity])
     }
 }

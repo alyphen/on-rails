@@ -59,7 +59,6 @@ private fun loadMapNow(
         objectGroup.objects.forEach { obj ->
             when (obj.type) {
                 "train" -> {
-                    console.log("Loaded train")
                     val train = Train(assets, obj.x, obj.y)
                     engine.add(train)
                     val camera = Camera(train)
