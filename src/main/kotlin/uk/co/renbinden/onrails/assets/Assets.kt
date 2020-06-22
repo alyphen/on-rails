@@ -50,6 +50,10 @@ class Assets {
         val steam = ImageAsset("static/images/steam.png")
         val levelSelectButton = ImageAsset("static/images/level_select_button.png")
         val levelSelectButtonHover = ImageAsset("static/images/level_select_button_hover.png")
+        val blueStation = ImageAsset("static/images/bluestation.png")
+        val greenStation = ImageAsset("static/images/greenstation.png")
+        val redStation = ImageAsset("static/images/redstation.png")
+        val yellowStation = ImageAsset("static/images/yellowstation.png")
     }
 
     inner class Maps {

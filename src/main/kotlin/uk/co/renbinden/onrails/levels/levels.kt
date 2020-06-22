@@ -3,6 +3,7 @@ package uk.co.renbinden.onrails.levels
 import uk.co.renbinden.ilse.asset.TextAsset
 import uk.co.renbinden.ilse.asset.event.AssetLoadEvent
 import uk.co.renbinden.ilse.ecs.Engine
+import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.ilse.event.Events
 import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.tiled.TiledMapLoader
@@ -11,7 +12,10 @@ import uk.co.renbinden.onrails.archetype.DreamBubbleSpawner
 import uk.co.renbinden.onrails.archetype.Track
 import uk.co.renbinden.onrails.archetype.Train
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.depth.Depth
 import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
+import uk.co.renbinden.onrails.image.Image
+import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.track.TrackOrientation.*
 
 @ExperimentalUnsignedTypes
@@ -75,6 +79,34 @@ private fun loadMapNow(
                         obj.y,
                         (obj.properties["time"] as Float).toDouble()
                     ))
+                }
+                "blue_station" -> {
+                    engine.add(entity {
+                        add(Image(assets.images.blueStation))
+                        add(Depth(0))
+                        add(Position(obj.x, obj.y))
+                    })
+                }
+                "green_station" -> {
+                    engine.add(entity {
+                        add(Image(assets.images.greenStation))
+                        add(Depth(0))
+                        add(Position(obj.x, obj.y))
+                    })
+                }
+                "red_station" -> {
+                    engine.add(entity {
+                        add(Image(assets.images.redStation))
+                        add(Depth(0))
+                        add(Position(obj.x, obj.y))
+                    })
+                }
+                "yellow_station" -> {
+                    engine.add(entity {
+                        add(Image(assets.images.yellowStation))
+                        add(Depth(0))
+                        add(Position(obj.x, obj.y))
+                    })
                 }
             }
         }
