@@ -107,6 +107,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                     showText(avatars.luluMomentis, "You also RED ANIMOSITY and GREEN INTIMACY. These affect the temperament of the dream.")
                     showText(avatars.luluMomentis, "Just focus on getting those Jubilance bubbles, and make sure you blast any Blue Misery away with your steam cannon.")
                     showTextWithOptions(avatars.luluMomentis, "Alright I really gotta dream. Let's get you on rails!", "Let's go!", "Choo choo, motherfucker!")
+                    showTextWithOptions(null, "Board the train to Dream Town?", "Yes.", "Yes.",)
                 },
                 assets.images.backgroundStation2,
                 timeline(assets) {
@@ -143,10 +144,44 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                 assets.images.backgroundStation2,
                 timeline(assets) {
 
+                createAvatar(avatars.dianeBogie, 450.0, 100.0)
+                createAvatar(avatars.angelaFunikular, 450.0, 100.0)
+                showText(null, "After falling asleep, you arrive back in Dreamrealm once again. Your engine waits for you at the station.")
+                showText(null, "There's a seriously looking woman on the platform...oh know she's looking this way!")
+                showTextWithOptions(avatars.angelaFunikular, "...................................................Hm." "Uh....hi?", "Good evening, ma'am.")
+                showText(avatars.angelaFunikular, "My name..............is Angela Funikular. You are working for..........my company...")
+                showText(avatars.angelaFunikular, "...")
+                showText(avatars.angelaFunikular, "...")
+                showText(avatars.angelaFunikular, "...")
+                showText(avatars.angelaFunikular, "...")
+                showText(avatars.angeulaFunikular, "...Junction Function Interpsyche Freightway. We are a...proud company. I expect you to give your very best on this and every job.")
+                showText(avatars.angelaFunikular, "Do you think you can.........handle it?", "Y...yeah.", "Yes Ma'am!",)
+                showText(avatars.angelaFunikular, "Groovy. I will....see you.......................................................again.")
+                showText(null, "Well, that was intense.")
+                showText(null, "Looks like there's a passenger waiting over there. Better take where they need to go.")
+                showTextWithOptions(avatars.dianeBogie, "U-uhm...hi...I was wondering if you'd be able to help me?", "Sure can!", "I can certainly try.",)
+                showText(avatars.dianeBogie,"T...That's great. My name's Diane Bogie, and I...look I'm in kind of a mess right now, and...I dunno. It feels like I could really just feeling my feelings.")
+                showTextWithOptions(avatars.dianeBogie,"You get what I mean?", "Go on...?", "I think so. Catharsis, right?")
+                showText(avatars.dianeBogie,"Yeah, so. I guess...can you make it like...sad? And super aggressive? That's what I've been feeling. Just a bunch of sad, bad and angry feelings.")
+                showText(avatars.dianeBogie, "Is that something you can do?", "Sure can.", "Of course.",)
+                showText(avatars.dianeBogie, "Thanks. This'll be good for me I think.")
+                showText(null, "Diane smiles gratefully as you both board the train.")
+
+
                 },
                 assets.images.backgroundStation3,
                 timeline(assets) {
-
+                createAvatar(avatars.dianeBogie, 450.0, 100.0)
+                createAvatar(avatars.jasonHardrail, 450.0, 100.0)
+                showTextWithOptions(avatars.dianeBogie, "Diane doesn't say much, but she smiles at you as she disappears." "Say goodbye.", "Just smile back.",)
+                showText(null, "As she leaves, you hear a loud crack of thunder.")
+                showText(avatars.jasonHardrail, "Heeeeeeey newbie! I'm back!")
+                showText(null, "Jason is back.")
+                showText(avatars.jasonHardrail, "Hahaaaa, how'd it GO!? Lulu said you were pretty good!", "I think I'm getting the hang of it" "What ARE you?")
+                showText(avatars.jasonHardrail, "Yeah, I can dig it. Alright, you must be pretty awake now you've got some rails under your hat!")
+                showText(avatars.jasonHardrail, "You did great out there. Hope to see you around the JFIF more, kid! See you around!")
+                showText(null, "Jason folds up like an origami doll and explodes into confetti.")
+                showText(null, "END OF LEVEL")
                 },
                 assets.maps.level2,
                 mapOf(
