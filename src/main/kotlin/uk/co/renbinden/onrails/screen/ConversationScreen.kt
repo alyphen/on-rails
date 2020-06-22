@@ -53,7 +53,10 @@ class ConversationScreen(val app: App, val assets: Assets) : Screen(engine {
         showText(avatars.angelaFunikular, "This is message 2. Pretty neat?")
         showText(null, "This message doesn't have a speaker. So we can describe what's going on.")
         showTextWithOptions(avatars.jasonHardrail, "You wanna make a choice? I got a bunch of choices!", "Choice A", "Choice B", "Choice C")
-        execute { app.screen = TrainScreen(app, assets) }
+        execute {
+            removeListeners()
+            app.screen = TrainScreen(app, assets)
+        }
     }
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
