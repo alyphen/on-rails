@@ -16,7 +16,7 @@ data class ShowTextConversationEvent(val assets: Assets, val speaker: Avatar?, v
         engine.entities.filter { it.has(Text) }.forEach(engine::remove)
         if (speaker != null) {
             engine.add(entity {
-                add(Position(32.0, 456.0))
+                add(Position(544.0, 456.0))
                 add(Text(speaker.name, 256.0))
                 add(FillStyle("rgb(255, 255, 255)"))
                 add(Font("20px 'Chelsea Market', cursive"))
@@ -25,7 +25,7 @@ data class ShowTextConversationEvent(val assets: Assets, val speaker: Avatar?, v
                 engine.add(entity {
                     add(Image(assets.images.nameBoxBackground))
                     add(Depth(-1))
-                    add(Position(16.0, 448.0))
+                    add(Position(528.0, 448.0))
                 })
             }
         } else {

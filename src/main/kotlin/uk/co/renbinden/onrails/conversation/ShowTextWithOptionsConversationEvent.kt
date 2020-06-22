@@ -25,7 +25,7 @@ class ShowTextWithOptionsConversationEvent(
         engine.entities.filter { it.has(Text) }.forEach(engine::remove)
         if (speaker != null) {
             engine.add(entity {
-                add(Position(32.0, 456.0))
+                add(Position(544.0, 456.0))
                 add(Text(speaker.name, 256.0))
                 add(FillStyle("rgb(255, 255, 255)"))
                 add(Font("20px 'Chelsea Market', cursive"))
@@ -34,7 +34,7 @@ class ShowTextWithOptionsConversationEvent(
                 engine.add(entity {
                     add(Image(assets.images.nameBoxBackground))
                     add(Depth(-1))
-                    add(Position(16.0, 448.0))
+                    add(Position(528.0, 448.0))
                 })
             }
         } else {
@@ -49,13 +49,13 @@ class ShowTextWithOptionsConversationEvent(
             add(Font("20px 'Chelsea Market', cursive"))
         })
 
-        val startY = 480 - (options.size * 48)
+        val startY = 480 - (options.size * 80)
         val optionEntities = options.mapIndexed { i, option -> entity {
-            add(Position(528.0, startY + (i * 48.0)))
+            add(Position(16.0, startY + (i * 80.0)))
             add(Image(assets.images.optionBackground))
             add(HoverImage(assets.images.optionBackground, assets.images.optionHoverBackground))
             add(Depth(-1))
-            add(Bounds(256.0, 32.0))
+            add(Bounds(256.0, 64.0))
         }}
         optionEntities.forEach { optionEntity ->
             optionEntity.add(Action {
@@ -66,7 +66,7 @@ class ShowTextWithOptionsConversationEvent(
             engine.add(optionEntity)
         }
         options.mapIndexed { i, option -> entity {
-            add(Position(544.0, startY + 8 + (i * 48.0)))
+            add(Position(32.0, startY + 8 + (i * 80.0)))
             add(Text(option, 256.0))
             add(FillStyle("rgb(255, 255, 255)"))
             add(Font("20px 'Chelsea Market', cursive"))
