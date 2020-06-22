@@ -5,51 +5,33 @@ import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
 import uk.co.renbinden.ilse.ecs.engine
-import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.ilse.event.Events
 import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.onrails.action.Action
+import uk.co.renbinden.onrails.archetype.LevelSelectButton
+import uk.co.renbinden.onrails.archetype.LevelSelectButtonText
 import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.bounds.Bounds
-import uk.co.renbinden.onrails.depth.Depth
-import uk.co.renbinden.onrails.hover.HoverImage
 import uk.co.renbinden.onrails.hover.HoverSystem
-import uk.co.renbinden.onrails.image.Image
-import uk.co.renbinden.onrails.path.Path
-import uk.co.renbinden.onrails.path.PathSystem
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
 import kotlin.browser.document
 import kotlin.browser.window
-import kotlin.math.sin
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
-class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
-    add(PathSystem())
-
-    add(entity {
-        add(Position(237.0, 64.0))
-        add(Bounds(326.0, 256.0))
-        add(Image(assets.images.title))
-        add(HoverImage(assets.images.title, assets.images.titleHover))
-        add(Depth(0))
-        add(Path(
-            { 237.0 },
-            { t -> (sin(t) * 16.0) + 32.0 }
-        ))
-    })
-}) {
+class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
 
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
     val ctx = canvas.getContext("2d") as CanvasRenderingContext2D
 
     val pipeline = RenderPipeline(
         BaseRenderer(canvas, ctx),
-        SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
+        SolidBackgroundRenderer(canvas, ctx, "#000000"),
         BackgroundImageRenderer(canvas, ctx, assets.images.backgroundStart),
-        ImageRenderer(canvas, ctx, engine)
+        ImageRenderer(canvas, ctx, engine),
+        TextRenderer(canvas, ctx, engine)
     )
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
@@ -69,16 +51,10 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     init {
         engine.add(HoverSystem(canvas))
 
-        engine.add(entity {
-            add(Position(118.0, 325.0))
-            add(Image(assets.images.buttonStart))
-            add(HoverImage(assets.images.buttonStart, assets.images.buttonStartHover))
-            add(Depth(0))
-            add(Bounds(565.0, 243.0))
-            add(Action {
-                removeListeners()
-                app.screen = LevelSelectScreen(app, assets)
-            })
+        engine.add(LevelSelectButtonText("1", 154.0, 320.0))
+        engine.add(LevelSelectButton(assets, 128.0, 300.0) {
+            removeListeners()
+            app.screen = ConversationScreen(app, assets)
         })
 
         addListeners()
@@ -95,5 +71,4 @@ class TitleScreen(val app: App, val assets: Assets) : Screen(engine {
     override fun onRender() {
         pipeline.onRender()
     }
-
 }

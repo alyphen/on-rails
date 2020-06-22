@@ -48,6 +48,8 @@ class Assets {
         val animosityBubble = AnimationAsset("static/images/animosity_bubble.png", 64, 64)
         val intimacyBubble = AnimationAsset("static/images/intimacy_bubble.png", 64, 64)
         val steam = ImageAsset("static/images/steam.png")
+        val levelSelectButton = ImageAsset("static/images/level_select_button.png")
+        val levelSelectButtonHover = ImageAsset("static/images/level_select_button_hover.png")
     }
 
     inner class Maps {
