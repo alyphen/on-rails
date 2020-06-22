@@ -27,11 +27,15 @@ class ImageRenderer(
                 if (entity.has(Image)) {
                     val image = entity[Image]
                     val position = entity[Position]
-                    ctx.drawImage(image.asset.image, position.x, position.y)
+                    if (image.asset.isLoaded) {
+                        ctx.drawImage(image.asset.image, position.x, position.y)
+                    }
                 } else if (entity.has(Animation)) {
                     val animation = entity[Animation]
                     val position = entity[Position]
-                    animation.asset.drawFrame(animation.getFrame(), ctx, position.x, position.y)
+                    if (animation.asset.isLoaded) {
+                        animation.asset.drawFrame(animation.getFrame(), ctx, position.x, position.y)
+                    }
                 }
             }
         if (camera != null) {

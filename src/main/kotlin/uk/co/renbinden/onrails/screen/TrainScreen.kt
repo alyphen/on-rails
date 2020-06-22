@@ -12,8 +12,10 @@ import uk.co.renbinden.ilse.input.event.KeyDownEvent
 import uk.co.renbinden.ilse.input.event.MouseDownEvent
 import uk.co.renbinden.ilse.input.mapping.Mouse
 import uk.co.renbinden.onrails.animation.AnimationSystem
+import uk.co.renbinden.onrails.archetype.Steam
 import uk.co.renbinden.onrails.archetype.WhistleEffect
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.camera.Camera
 import uk.co.renbinden.onrails.camera.CameraSystem
 import uk.co.renbinden.onrails.collision.DreamCollectSystem
 import uk.co.renbinden.onrails.direction.Direction
@@ -23,6 +25,7 @@ import uk.co.renbinden.onrails.levels.loadMap
 import uk.co.renbinden.onrails.particle.ParticleSystem
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
+import uk.co.renbinden.onrails.steam.SteamRepelSystem
 import uk.co.renbinden.onrails.timer.TimerSystem
 import uk.co.renbinden.onrails.timer.TimerTask
 import uk.co.renbinden.onrails.track.TrackDirection
@@ -33,8 +36,10 @@ import uk.co.renbinden.onrails.train.TrainSystem
 import uk.co.renbinden.onrails.velocity.Velocity
 import uk.co.renbinden.onrails.velocity.VelocitySystem
 import kotlin.browser.document
+import kotlin.browser.window
 import kotlin.experimental.and
 import kotlin.math.abs
+import kotlin.math.sqrt
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
@@ -45,6 +50,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     add(ParticleSystem())
     add(CameraSystem())
     add(DreamCollectSystem())
+    add(SteamRepelSystem())
 }) {
 
     val canvas = document.getElementById("canvas") as HTMLCanvasElement
@@ -68,12 +74,29 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
 
     private val mouseDownListener = Listener<MouseDownEvent>({ event ->
         if (event.buttons and Mouse.PRIMARY != 0.toShort()) {
-
+            val train = engine.entities.firstOrNull { it.has(Train) && it.has(Position) }
+            val camera = engine.entities.firstOrNull { it.has(Camera) && it.has(Position) }
+            if (train != null && camera != null) {
+                if (engine.entities.none { it.has(uk.co.renbinden.onrails.steam.Steam) }) {
+                    val trainPosition = train[Position]
+                    val cameraPosition = camera[Position]
+                    val mouseX = event.pageX - (canvas.getBoundingClientRect().left + window.scrollX)
+                    val mouseY = event.pageY - (canvas.getBoundingClientRect().top + window.scrollY)
+                    val smoke = Steam(engine, assets, trainPosition.x + 32.0, trainPosition.y + 32.0)
+                    val velocity = smoke[Velocity]
+                    val xDist = (mouseX - 32 + (cameraPosition.x - 400)) - (trainPosition.x + 32.0)
+                    val yDist = (mouseY - 32 + (cameraPosition.y - 300)) - (trainPosition.y + 32.0)
+                    val magnitude = sqrt((xDist * xDist) + (yDist * yDist))
+                    val newMagnitude = 256
+                    velocity.dx = xDist * (newMagnitude / magnitude)
+                    velocity.dy = yDist * (newMagnitude / magnitude)
+                    engine.add(smoke)
+                }
+            }
         }
         if (event.buttons and Mouse.SECONDARY != 0.toShort()) {
             val train = engine.entities.firstOrNull { it.has(Train) && it.has(Position) }
             if (train != null) {
-                event.preventDefault()
                 val trainPosition = train[Position]
                 engine.add(WhistleEffect(ctx, train, 768.0))
                 engine.entities.filter { it.has(DreamBubbleEmotion) && it.has(Position) && it.has(Velocity) }

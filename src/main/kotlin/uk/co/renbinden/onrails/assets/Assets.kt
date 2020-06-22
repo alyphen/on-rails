@@ -47,6 +47,7 @@ class Assets {
         val miseryBubble = AnimationAsset("static/images/misery_bubble.png", 64, 64)
         val animosityBubble = AnimationAsset("static/images/animosity_bubble.png", 64, 64)
         val intimacyBubble = AnimationAsset("static/images/intimacy_bubble.png", 64, 64)
+        val steam = ImageAsset("static/images/steam.png")
     }
 
     inner class Maps {
