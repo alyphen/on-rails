@@ -8,6 +8,9 @@ class Assets {
 
     inner class Images {
         val backgroundStart = ImageAsset("static/images/start_bg_full.png")
+        val backgroundStartTile = ImageAsset("static/images/start-bg.gif")
+        val backgroundStars1 = ImageAsset("static/images/background_stars_1.png")
+        val backgroundStars2 = ImageAsset("static/images/background_stars_2.png")
         val title = ImageAsset("static/images/on_rails_logo.png")
         val titleHover = ImageAsset("static/images/on_rails_logo_hover.png")
         val buttonStart = ImageAsset("static/images/start_start.png")

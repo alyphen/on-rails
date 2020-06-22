@@ -16,10 +16,7 @@ import uk.co.renbinden.onrails.direction.Direction
 import uk.co.renbinden.onrails.direction.Direction.*
 import uk.co.renbinden.onrails.levels.loadMap
 import uk.co.renbinden.onrails.position.Position
-import uk.co.renbinden.onrails.renderer.BaseRenderer
-import uk.co.renbinden.onrails.renderer.ImageRenderer
-import uk.co.renbinden.onrails.renderer.RenderPipeline
-import uk.co.renbinden.onrails.renderer.SolidBackgroundRenderer
+import uk.co.renbinden.onrails.renderer.*
 import uk.co.renbinden.onrails.track.TrackDirection
 import uk.co.renbinden.onrails.track.TrackOrientation
 import uk.co.renbinden.onrails.track.TrackOrientation.*
@@ -43,6 +40,7 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
     val pipeline = RenderPipeline(
         BaseRenderer(canvas, ctx),
         SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
+        TiledBackgroundImageRenderer(canvas, ctx, engine, assets.images.backgroundStars2),
         ImageRenderer(canvas, ctx, engine)
     )
 
