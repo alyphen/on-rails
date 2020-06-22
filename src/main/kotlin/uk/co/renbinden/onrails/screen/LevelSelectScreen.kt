@@ -111,7 +111,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                 assets.images.backgroundStation2,
                 timeline(assets) {
                     createAvatar(avatars.luluMomentis, 450.0, 100.0)
-                    showText(avatars.luluMomentis, "Hey, not bad out there! Considering it was your first time, be proud! Rails are pretty wild huh?", "Yeah, I nailed it!" "I dunno, I could've done better.")
+                    showTextWithOptions(avatars.luluMomentis, "Hey, not bad out there! Considering it was your first time, be proud! Rails are pretty wild huh?", "Yeah, I nailed it!", "I dunno, I could've done better.")
                     showText(avatars.luluMomentis, "Just keep at it, yeah? You got this.")
                     showText(avatars.luluMomentis, "I gotta go wake up now, but I'll let Jason know how ya did, I'm sure he'll wanna hear about how our new conductor's skills.")
                     showTextWithOptions(avatars.luluMomentis, "See ya around!", "Thanks, Lulu!", "Haha, later!,")
