@@ -61,8 +61,10 @@ class ConversationScreen(val app: App, val assets: Assets, val conversationTimel
     })
 
     init {
+        assets.sounds.funktionJunktionStation.currentTime = 0.0
+        assets.sounds.funktionJunktionStation.play()
         engine.add(HoverSystem(canvas))
-        conversationTimeline.execute { removeListeners(); next() }
+        conversationTimeline.execute { removeListeners(); assets.sounds.funktionJunktionStation.pause(); next() }
         conversationTimeline.progress(engine)
 
         addListeners()

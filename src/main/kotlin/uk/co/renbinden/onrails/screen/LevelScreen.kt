@@ -47,6 +47,7 @@ import kotlin.experimental.and
 import kotlin.math.abs
 import kotlin.math.round
 import kotlin.math.sqrt
+import kotlin.random.Random
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
@@ -63,7 +64,6 @@ class LevelScreen(
     add(AnimationSystem())
     add(ParticleSystem())
     add(CameraSystem())
-    add(DreamCollectSystem())
     add(SteamRepelSystem())
     add(EndSystem())
 }) {
@@ -132,6 +132,11 @@ class LevelScreen(
                     velocity.dx = xDist * (newMagnitude / magnitude)
                     velocity.dy = yDist * (newMagnitude / magnitude)
                     engine.add(smoke)
+                    when (Random.nextInt(3)) {
+                        0 -> assets.sounds.steamCannon1.play()
+                        1 -> assets.sounds.steamCannon2.play()
+                        2 -> assets.sounds.steamCannon3.play()
+                    }
                 }
             }
         }
@@ -140,6 +145,7 @@ class LevelScreen(
             if (train != null) {
                 val trainPosition = train[Position]
                 engine.add(WhistleEffect(engine, ctx, train, 768.0))
+                assets.sounds.whistle.play()
                 engine.entities.filter { it.has(DreamBubbleEmotion) && it.has(Position) && it.has(Velocity) }
                     .forEach { dreamBubble ->
                         val dreamBubblePosition = dreamBubble[Position]
@@ -258,6 +264,7 @@ class LevelScreen(
             }
             else -> Unit
         }
+        assets.sounds.trackSwitch.play()
     }
 
     fun Entity.switchPointsRight() {
@@ -305,14 +312,18 @@ class LevelScreen(
             }
             else -> Unit
         }
+        assets.sounds.trackSwitch.play()
     }
 
     init {
+        engine.add(DreamCollectSystem(assets))
         engine.add(TrainSystem(assets))
         engine.loadMap(assets, map, level, this::calculateScore) {
             removeListeners()
             app.screen = ConversationScreen(app, assets, endConversation, { app.screen = LevelSelectScreen(app, assets) })
         }
+        assets.sounds.dreamtrainBlues.currentTime = 0.0
+        assets.sounds.dreamtrainBlues.play()
         addListeners()
     }
 

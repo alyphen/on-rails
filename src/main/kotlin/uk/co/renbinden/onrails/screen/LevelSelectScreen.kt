@@ -66,6 +66,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
         val avatars = Avatars(assets)
         engine.add(LevelSelectButton(assets, 128.0, 300.0) {
             removeListeners()
+            assets.sounds.beep.play()
             level(
                 1,
                 timeline(assets) {

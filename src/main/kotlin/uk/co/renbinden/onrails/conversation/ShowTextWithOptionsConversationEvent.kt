@@ -59,6 +59,7 @@ class ShowTextWithOptionsConversationEvent(
         }}
         optionEntities.forEach { optionEntity ->
             optionEntity.add(Action {
+                assets.sounds.beep.play()
                 optionEntities.forEach(engine::remove)
                 conversationTimeline.progress(engine)
             })

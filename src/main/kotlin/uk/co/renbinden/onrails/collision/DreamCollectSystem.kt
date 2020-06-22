@@ -2,11 +2,12 @@ package uk.co.renbinden.onrails.collision
 
 import uk.co.renbinden.ilse.ecs.entity.Entity
 import uk.co.renbinden.ilse.ecs.system.IteratingSystem
+import uk.co.renbinden.onrails.assets.Assets
 import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
 import uk.co.renbinden.onrails.dreamstats.DreamStats
 import uk.co.renbinden.onrails.train.Train
 
-class DreamCollectSystem : IteratingSystem({
+class DreamCollectSystem(val assets: Assets) : IteratingSystem({
     it.has(Train) && it.has(Collider)
 }) {
     override fun processEntity(entity: Entity, dt: Double) {
@@ -18,6 +19,7 @@ class DreamCollectSystem : IteratingSystem({
             val emotion = dreamBubble[DreamBubbleEmotion]
             dreamStats.emotions[emotion] = (dreamStats.emotions[emotion] ?: 0) + 1
             engine.remove(dreamBubble)
+            assets.sounds.bubbleGet.play()
         }
     }
 }

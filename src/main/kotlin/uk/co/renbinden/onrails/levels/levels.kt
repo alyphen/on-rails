@@ -131,6 +131,8 @@ private fun loadMapNow(
                         )))
                         add(End {
                             Scoring.setScore(level, calculateScore())
+                            assets.sounds.dreamtrainBlues.pause()
+                            assets.sounds.levelEnd.play()
                             showEndConversation()
                         })
                     })

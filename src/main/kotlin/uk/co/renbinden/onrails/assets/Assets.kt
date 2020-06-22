@@ -1,7 +1,9 @@
 package uk.co.renbinden.onrails.assets
 
+import org.w3c.dom.Audio
 import uk.co.renbinden.ilse.asset.AnimationAsset
 import uk.co.renbinden.ilse.asset.ImageAsset
+import uk.co.renbinden.ilse.asset.SoundAsset
 import uk.co.renbinden.ilse.asset.TextAsset
 
 class Assets {
@@ -61,7 +63,21 @@ class Assets {
         val overworld = TextAsset("static/maps/tilemap_Overworld.tmx")
     }
 
+    inner class Sounds {
+        val beep = SoundAsset("static/sounds/Beep.wav")
+        val bubbleGet = SoundAsset("static/sounds/Bubbleget.mp3")
+        val dreamtrainBlues = Audio("static/sounds/Dreamtrain_Blues.mp3").also { it.loop = true }
+        val funktionJunktionStation = Audio("static/sounds/Funktion_Junction_Station.mp3").also { it.loop = true }
+        val levelEnd = SoundAsset("static/sounds/Level_End.mp3")
+        val steamCannon1 = SoundAsset("static/sounds/Steam_Cannon_1.wav")
+        val steamCannon2 = SoundAsset("static/sounds/Steam_Cannon_2.wav")
+        val steamCannon3 = SoundAsset("static/sounds/Steam_Cannon_3.wav")
+        val trackSwitch = SoundAsset("static/sounds/trackswitch.mp3")
+        val whistle = SoundAsset("static/sounds/Whistle.mp3")
+    }
+
     val images = Images()
     val maps = Maps()
+    val sounds = Sounds()
 
 }
