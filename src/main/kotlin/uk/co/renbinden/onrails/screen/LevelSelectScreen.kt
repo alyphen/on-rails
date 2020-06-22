@@ -148,11 +148,11 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                 timeline(assets) {
 
                 },
-                assets.maps.overworld,
+                assets.maps.level2,
                 mapOf(
-                    JUBILANCE to 4,
-                    MISERY to 0,
-                    ANIMOSITY to 3,
+                    JUBILANCE to 0,
+                    MISERY to 30,
+                    ANIMOSITY to 30,
                     INTIMACY to 0
                 )
             )
