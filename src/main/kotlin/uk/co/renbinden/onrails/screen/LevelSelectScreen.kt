@@ -78,10 +78,10 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                     showText(avatars.jasonHardrail, "Haha, yeah it takes a lot to get used to. Bet you're a natural though.")
                     showText(null, "The stranger gives you a warm smile, and his teeth twinkle in the starlight.")
                     showText(avatars.jasonHardrail, "Welcome to Junction Function Interpsyche Freightway. Call me Jason Hardrail.")
-                    showTextWithOptions(avatars.jasonHardrail, "Y'see, everyone dreams right? Well you ever think about where those dreams come from?", "The brain sorting through memories?", "Visions from a higher power?",)
+                    showTextWithOptions(avatars.jasonHardrail, "Y'see, everyone dreams right? Well you ever think about where those dreams come from?", "The brain sorting through memories?", "Visions from a higher power?")
                     showText(avatars.jasonHardrail, "Pssh, nah. They come from Dreamrealm, which is where we're at right now. Pretty fancy huh?")
                     showText(avatars.jasonHardrail, "You're one of the cool cats who've been selected to help people get the dreams they need. Welcome to your new job, newbie.")
-                    showTextWithOptions(avatars.jasonHardrail, "You with me so far?", "Hey, I didn't sign up for this!", "Right on, how do we do it?",)
+                    showTextWithOptions(avatars.jasonHardrail, "You with me so far?", "Hey, I didn't sign up for this!", "Right on, how do we do it?")
                     showText(avatars.jasonHardrail, "Yeah, I hear ya I hear ya. We don't really get a say in who gets the job, but I gotta say it's a pretty sweet gig. And you get your own ride.")
                     showText(avatars.jasonHardrail, "Speakin' of, we gotta get you set up. You seem funky, but we both got work to do, so listen up newbie.")
                     showText(null, "Jason gets this real intense look all of a sudden.")
@@ -92,7 +92,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                     showText(avatars.jasonHardrail, "To draw those Dream Bubbles towards your train, blow the WHISTLE with RIGHT MOUSE BUTTON. This'll attract all kinds of bubbles towards you like a magnet. Now...")
                     showText(avatars.jasonHardrail, "Some vibes out there you don't want. You gotta blow them away! Fire your STEAM CANNON with LEFT MOUSE BUTTON. Use the mouse to aim, too, y'dig?")
                     showText(avatars.jasonHardrail, "Oh, and some tracks'll be better for certain vibes than others, so once you learn your rails you'll be able to give way better dreams.")
-                    showTextWithOptions(avatars.jasonHardrail, "Aaaaaaalright. That's pretty much it. That all make sense, kid?", "Kinda?", "...No!",)
+                    showTextWithOptions(avatars.jasonHardrail, "Aaaaaaalright. That's pretty much it. That all make sense, kid?", "Kinda?", "...No!")
                     showText(avatars.jasonHardrail, "That's the spirit. Anyway, lets get your first job, lemme check who's up first!")
                     showText(null, "For a few seconds, Jason's eyes roll back into his head and he floats several inches off the platform floor.")
                     showText(avatars.jasonHardrail, "Alright, looks like you're startin' with one of our very own JFIF employees. She'll be nice. Hang around here for a bit, she'll be along soon. Catch you around kid!")
@@ -106,7 +106,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                     showText(avatars.luluMomentis, "You got YELLOW JUBILANCE and BLUE MISERY, which are self explanatory; Jubilance for happy dreams, Misery for sad ones.")
                     showText(avatars.luluMomentis, "You also RED ANIMOSITY and GREEN INTIMACY. These affect the temperament of the dream.")
                     showText(avatars.luluMomentis, "Just focus on getting those Jubilance bubbles, and make sure you blast any Blue Misery away with your steam cannon.")
-                    showTextWithOptions(avatars.luluMomentis, "Alright I really gotta dream. Let's get you on rails!", "Let's go!", "Choo choo, motherfucker!",)
+                    showTextWithOptions(avatars.luluMomentis, "Alright I really gotta dream. Let's get you on rails!", "Let's go!", "Choo choo, motherfucker!")
                 },
                 assets.images.backgroundStation2,
                 timeline(assets) {
