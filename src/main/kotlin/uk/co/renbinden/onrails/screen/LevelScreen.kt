@@ -352,7 +352,7 @@ class LevelScreen(
             val miseryDist = (targetEmotions[MISERY] ?: 0) - (statsContainer[DreamStats].emotions[MISERY] ?: 0)
             val animosityDist = (targetEmotions[ANIMOSITY] ?: 0) - (statsContainer[DreamStats].emotions[ANIMOSITY] ?: 0)
             val intimacyDist = (targetEmotions[INTIMACY] ?: 0) - (statsContainer[DreamStats].emotions[INTIMACY] ?: 0)
-            return 10000 - round(sqrt(((jubilanceDist * jubilanceDist) + (miseryDist * miseryDist) + (animosityDist * animosityDist) + (intimacyDist * intimacyDist)).toDouble()) * 1000.0).toInt()
+            return 10000 - round(sqrt(((jubilanceDist * jubilanceDist) + (miseryDist * miseryDist) + (animosityDist * animosityDist) + (intimacyDist * intimacyDist)).toDouble()) * 100.0).toInt()
         } else {
             return 0
         }
