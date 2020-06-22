@@ -7,9 +7,11 @@ import uk.co.renbinden.ilse.event.Events
 import uk.co.renbinden.ilse.event.Listener
 import uk.co.renbinden.ilse.tiled.TiledMapLoader
 import uk.co.renbinden.onrails.archetype.Camera
+import uk.co.renbinden.onrails.archetype.DreamBubbleSpawner
 import uk.co.renbinden.onrails.archetype.Track
 import uk.co.renbinden.onrails.archetype.Train
 import uk.co.renbinden.onrails.assets.Assets
+import uk.co.renbinden.onrails.dreambubble.DreamBubbleEmotion
 import uk.co.renbinden.onrails.track.TrackOrientation.*
 
 @ExperimentalUnsignedTypes
@@ -63,6 +65,16 @@ private fun loadMapNow(
                     engine.add(train)
                     val camera = Camera(train)
                     engine.add(camera)
+                }
+                "dream_bubble_spawner" -> {
+                    engine.add(DreamBubbleSpawner(
+                        engine,
+                        assets,
+                        DreamBubbleEmotion.valueOf(obj.properties["emotion"] as String),
+                        obj.x,
+                        obj.y,
+                        (obj.properties["time"] as Float).toDouble()
+                    ))
                 }
             }
         }

@@ -17,6 +17,7 @@ import uk.co.renbinden.onrails.direction.Direction.*
 import uk.co.renbinden.onrails.levels.loadMap
 import uk.co.renbinden.onrails.position.Position
 import uk.co.renbinden.onrails.renderer.*
+import uk.co.renbinden.onrails.timer.TimerSystem
 import uk.co.renbinden.onrails.track.TrackDirection
 import uk.co.renbinden.onrails.track.TrackOrientation
 import uk.co.renbinden.onrails.track.TrackOrientation.*
@@ -29,6 +30,7 @@ import kotlin.math.abs
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
 class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
+    add(TimerSystem())
     add(VelocitySystem())
     add(AnimationSystem())
     add(CameraSystem())
@@ -49,10 +51,6 @@ class TrainScreen(val app: App, val assets: Assets) : Screen(engine {
             getNextPoints()?.switchPointsLeft()
         } else if (event.key == "d" || event.key == "ArrowRight") {
             getNextPoints()?.switchPointsRight()
-        } else if (event.key == "s") {
-//            val train = engine.entities.firstOrNull { it.has(Train) && it.has(Position) }?.get(Train)
-//            train?.lastTrack?.nextTrack(train.lastDirection)?.let(engine::remove)
-            getNextPoints()?.let(engine::remove)
         }
     })
 
