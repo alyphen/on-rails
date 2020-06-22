@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
+import uk.co.renbinden.ilse.asset.ImageAsset
 import uk.co.renbinden.ilse.asset.TextAsset
 import uk.co.renbinden.ilse.ecs.engine
 import uk.co.renbinden.ilse.ecs.entity.entity
@@ -69,6 +70,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
             assets.sounds.beep.play()
             level(
                 1,
+                assets.images.backgroundStation1,
                 timeline(assets) {
                     createAvatar(avatars.jasonHardrail, 500.0, 100.0)
                     createAvatar(avatars.angelaFunikular, 16.0, 100.0)
@@ -77,6 +79,7 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
                     showText(null, "This message doesn't have a speaker. So we can describe what's going on.")
                     showTextWithOptions(avatars.jasonHardrail, "You wanna make a choice? I got a bunch of choices!", "Choice A", "Choice B", "Choice C")
                 },
+                assets.images.backgroundStation2,
                 timeline(assets) {
                     createAvatar(avatars.dianaBogie, 500.0, 100.0)
                     showText(avatars.dianaBogie, "And that's the end")
@@ -106,9 +109,9 @@ class LevelSelectScreen(val app: App, val assets: Assets) : Screen(engine {}) {
         addListeners()
     }
 
-    fun level(level: Int, startConversation: ConversationTimeline, endConversation: ConversationTimeline, map: TextAsset, emotions: Map<DreamBubbleEmotion, Int>) {
-        app.screen = ConversationScreen(app, assets, startConversation) {
-            app.screen = LevelScreen(app, assets, level, map, endConversation, emotions)
+    fun level(level: Int, startBackground: ImageAsset, startConversation: ConversationTimeline, endBackground: ImageAsset, endConversation: ConversationTimeline, map: TextAsset, emotions: Map<DreamBubbleEmotion, Int>) {
+        app.screen = ConversationScreen(app, assets, startBackground, startConversation) {
+            app.screen = LevelScreen(app, assets, level, map, endBackground, endConversation, emotions)
         }
     }
 

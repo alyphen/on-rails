@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
+import uk.co.renbinden.ilse.asset.ImageAsset
 import uk.co.renbinden.ilse.ecs.engine
 import uk.co.renbinden.ilse.ecs.entity.entity
 import uk.co.renbinden.ilse.event.Events
@@ -24,7 +25,7 @@ import kotlin.browser.window
 
 @ExperimentalUnsignedTypes
 @ExperimentalStdlibApi
-class ConversationScreen(val app: App, val assets: Assets, val conversationTimeline: ConversationTimeline, val next: () -> Unit) : Screen(engine {
+class ConversationScreen(val app: App, val assets: Assets, val background: ImageAsset, val conversationTimeline: ConversationTimeline, val next: () -> Unit) : Screen(engine {
     add(entity {
         add(Position(0.0, 480.0))
         add(Image(assets.images.textBoxBackground))
@@ -38,7 +39,7 @@ class ConversationScreen(val app: App, val assets: Assets, val conversationTimel
     val pipeline = RenderPipeline(
         BaseRenderer(canvas, ctx),
         SolidBackgroundRenderer(canvas, ctx, "rgb(0, 0, 0)"),
-        BackgroundImageRenderer(canvas, ctx, assets.images.backgroundStation1),
+        BackgroundImageRenderer(canvas, ctx, background),
         ImageRenderer(canvas, ctx, engine),
         TextRenderer(canvas, ctx, engine)
     )

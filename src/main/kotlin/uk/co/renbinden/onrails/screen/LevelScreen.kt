@@ -4,6 +4,7 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import uk.co.renbinden.ilse.app.App
 import uk.co.renbinden.ilse.app.screen.Screen
+import uk.co.renbinden.ilse.asset.ImageAsset
 import uk.co.renbinden.ilse.asset.TextAsset
 import uk.co.renbinden.ilse.ecs.engine
 import uk.co.renbinden.ilse.ecs.entity.Entity
@@ -56,6 +57,7 @@ class LevelScreen(
     val assets: Assets,
     val level: Int,
     val map: TextAsset,
+    val endBackground: ImageAsset,
     val endConversation: ConversationTimeline,
     val targetEmotions: Map<DreamBubbleEmotion, Int>
 ) : Screen(engine {
@@ -320,7 +322,7 @@ class LevelScreen(
         engine.add(TrainSystem(assets))
         engine.loadMap(assets, map, level, this::calculateScore) {
             removeListeners()
-            app.screen = ConversationScreen(app, assets, endConversation, { app.screen = LevelSelectScreen(app, assets) })
+            app.screen = ConversationScreen(app, assets, endBackground, endConversation, { app.screen = LevelSelectScreen(app, assets) })
         }
         assets.sounds.dreamtrainBlues.currentTime = 0.0
         assets.sounds.dreamtrainBlues.play()
